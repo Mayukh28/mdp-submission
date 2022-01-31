@@ -13,10 +13,11 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 1000);
 const canvas = document.querySelector('#bg')
 const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
-  alpha: true
+  canvas: canvas ,
+  alpha: true,
+  antialias:true
 });
-renderer.setSize(sizes.width, sizes.height)
+renderer.setSize(sizes.width , sizes.height)
 camera.aspect = sizes.width / sizes.height
 camera.updateProjectionMatrix()
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -49,25 +50,22 @@ controls.touches = {
   ONE: THREE.TOUCH.ROTATE,
   TWO: THREE.TOUCH.DOLLY_PAN,
 }
-controls.maxPolarAngle = Infinity;
-controls.minPolarAngle = -Infinity;
-controls.maxAzimuthAngle = Infinity;
-controls.minAzimuthAngle = -Infinity;
 
-window.addEventListener('resize', () => {
-  // Update sizes
-  sizes.width = window.innerWidth * screenDivide
-  sizes.height = window.innerHeight
-  if (window.innerWidth <= 693) {
-    sizes.width = window.innerWidth
-  }
-  // Update camera
-  camera.aspect = sizes.width / sizes.height
-  camera.updateProjectionMatrix()
+window.addEventListener('resize', () =>
+{
+    // Update sizes
+    sizes.width = window.innerWidth * screenDivide
+    sizes.height = window.innerHeight
+    if (window.innerWidth <= 693) {
+      sizes.width = window.innerWidth
+    }
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-  // Update renderer
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 // interaction
@@ -81,14 +79,18 @@ function animateTerrain(event) {
 
 
 window.addEventListener("resize", e => {
-
+  
 })
 
 const scaleArr = [21]
 // Render Loop
 function animate() {
   mesh.rotation.z += 0.01 * Math.sin(1)
-
+  if (window.innerWidth < 550) {
+    sizes.width = window.innerWidth
+    renderer.setSize(sizes.width, sizes.height)
+    
+  }
 
   controls.update()
 
@@ -96,4 +98,20 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+window.onload = function hi() {
+  if (window.innerWidth < 550) {
+    
+    sizes.height = window.innerHeight
+    if (window.innerWidth <= 693) {
+      sizes.width = window.innerWidth
+    }
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
+
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  }
+}
 animate();
